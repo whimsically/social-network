@@ -30,6 +30,7 @@ const thoughtSchema = new Schema(
       
 )
 
+//virtual for reactionCount
 thoughtSchema
   .virtual('reactionCount')
   // Getter

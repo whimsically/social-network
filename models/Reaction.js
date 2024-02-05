@@ -1,9 +1,10 @@
 const { Schema, Types } = require('mongoose');
 
-
+//reactionSchema is a subdocument of Thought
 const reactionSchema = new Schema (
     {
         reactionId: {
+            //creates new Id with mongoose's ObjectId
             type: Schema.Types.ObjectId,
             default: () => new Types.ObjectId(),
         },
