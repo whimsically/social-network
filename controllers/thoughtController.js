@@ -15,12 +15,11 @@ module.exports = {
     async getThoughtById(req, res) {
         try {
             const thought = await Thought.findOne({ _id: req.params.thoughtId })
-            .select('-__v');
 
             if (!thought) {
                 return res.status(404).json({ message: 'No thought with that ID' });
             }
-
+            res.json(thought);
         } catch (err) {
             res.status(500).json(err);
         }
@@ -42,14 +41,14 @@ module.exports = {
             const thought = await Thought.findOneAndUpdate(
                 { _id: req.params.thoughtId },
                 { $set: req.body },
-                { runValidators: true, new: true }
+                { new: true }
             );
 
-            if (!course) {
+            if (!thought) {
                 return res.status(404).json({ message: 'No course with this id!' });
               }
               
-              res.json(thought);
+            res.json(thought);
 
         } catch (err) {
             res.status(500).json(err);
@@ -95,18 +94,11 @@ module.exports = {
     //delete reaction
     async deleteReaction(req, res) {
         try {
-            //checks if the reaction ID exists
-            const reaction = await Thought.findOne( { reactions: { reactionId: req.params.reactionId }} )
-            //if not, return 404
-            if (!reaction) {
-                return res.status(404).json({ message: "No reaction with that ID!" });
-            }
-
             //update the parent Thought, remove from reaction array
             const thought = await Thought.findOneAndUpdate(
                 { _id: req.params.thoughtId },
                 { $pull: { reactions: { reactionId: req.params.reactionId } } },
-                { runValidators: true, new: true }
+                { new: true }
             );
                 
             //return 404 if not found
@@ -119,5 +111,5 @@ module.exports = {
         } catch (err) {
             res.status(500).json(err);
         }
-    },
+    }
 }

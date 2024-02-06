@@ -15,12 +15,11 @@ module.exports = {
     async getUserById(req, res) {
         try {
             const user = await User.findOne({ _id: req.params.userId })
-            .select('-__v');
 
             if (!user) {
                 return res.status(404).json({ message: 'No user with that ID' });
             }
-
+            res.json(user);
         } catch (err) {
             res.status(500).json(err);
         }
@@ -45,9 +44,11 @@ module.exports = {
               return res.status(404).json({ message: 'No user with that ID' });
             }
 
-            //deletes the user's posts
+            //deletes the user's posts & friends
             await Thought.deleteMany({ _id: { $in: user.thoughts } });
-            res.json({ message: 'Users and their thoughts deleted!' });
+            await User.deleteMany( { _id: { $in: user.friends }});
+
+           res.json({ message: 'Users and their thoughts deleted!' });
 
         } catch (err) {
             res.status(500).json(err);
@@ -73,7 +74,13 @@ module.exports = {
                 return res.status(404).json( { message: "User ID Incorrect! No user found." });
             }
 
-            res.json( { message: "Successfully added friend!" });
+            const friendUpdate = await User.findOneAndUpdate(
+                { _id: req.params.friendId },
+                { $addToSet: { friends: req.params.userId } },
+                { new: true }
+            )
+
+            return res.json( { message: "Successfully added friend!" });
 
         } catch (err) {
             res.status(500).json(err);
@@ -99,7 +106,14 @@ module.exports = {
                 if (!user) {
                     return res.status(404).json( { message: "User ID Incorrect! No user found." });
                 }
-    
+
+                const friendUpdate = User.findOneAndUpdate(
+                    { _id: req.params.friendId },
+                    { $pull: { friends: req.params.userId } },
+                    { new: true });
+
+            return res.json('Successfully removed friend!');
+
             } catch (err) {
                 res.status(500).json(err);
             }
