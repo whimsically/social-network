@@ -14,6 +14,8 @@ After installation, use a program such as Insomnia to test the routes.
 
 ![screenshot of routes in insomnia](social-backend-ss.png)
 
+[Check out a walkthrough video here!](https://app.screencastify.com/v3/watch/8zJQBXYf3ar6ivklQ6RT)
+
 ## Credits
 
 This project was part of my studies during the KU Full Stack Web Development bootcamp, so I referenced prior in class work to create this.
