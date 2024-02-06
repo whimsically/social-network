@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const Thought = model('thought', thoughtSchema);
 const reactionSchema = require('./Reaction');
 const { format } = require('date-fns');
 
@@ -42,5 +41,6 @@ thoughtSchema
     return this.reactions.length;
   });
 
+const Thought = model('thought', thoughtSchema);
 
 module.exports = Thought;

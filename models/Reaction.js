@@ -35,4 +35,4 @@ const reactionSchema = new Schema (
 
 )
 
-model.exports = reactionSchema;
+module.exports = reactionSchema;
